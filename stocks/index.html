@@ -24,11 +24,11 @@
         async function getStockPrice(){
             const APIKey= "wIK8H7_dFgpSspm21qBKDmSQvQ5hkNZ4";
             const StockSymbol = "AAPL" //stock symbol / ticker symbol for apple Inc
-            const APIURL = `https://api.polygon.io/v1/stocks/${StockSymbol}?apiKey=${APIKey}`;
+            const APIURL = `https://api.polygon.io/v2/aggs/ticker/${StockSymbol}/prev?adjusted=true&apiKey=${APIKey}`;
             try {
                 const response = await fetch(APIKey);
                 const data = await response.json();
-                const price = result[0].l;
+                const price = data.result[0].l;
                 // const price = data.last.price;
                 document.getElementById('result').innerHTML = `Current Price of ${StockSymbol} is ${price}`
             } 
