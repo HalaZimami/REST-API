@@ -28,7 +28,8 @@
             try {
                 const response = await fetch(APIKey);
                 const data = await response.json();
-                const price = data.last.price;
+                const price = result[0].l;
+                // const price = data.last.price;
                 document.getElementById('result').innerHTML = `Current Price of ${StockSymbol} is ${price}`
             } 
             catch(error) {
