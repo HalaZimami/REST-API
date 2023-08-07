@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Car Details Form API</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container m-5">
+      <h3>Car Details as received from server</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody id="carDetails"></tbody>
+      </table>
+      <br /><br /><br />
+      <h3 class="ml-4">Add new car</h3>
+      <form id="form">
+        <div class="m-4">
+          <label for="make" class="form-label">Make</label>
+          <input
+            type="text"
+            name="make"
+            class="form-control"
+            id="make"
+            required
+          />
+        </div>
+        <div class="m-4">
+          <label for="model" class="form-label">Model</label>
+          <input
+            type="text"
+            name="model"
+            class="form-control"
+            id="model"
+            required
+          />
+        </div>
+        <div class="m-4">
+          <label for="year" class="form-label">Year</label>
+          <input
+            type="number"
+            name="year"
+            class="form-control"
+            id="year"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary ml-4">Add Car</button>
+      </form>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script>
+      const carDetails = document.getElementById("carDetails");
+      fetch("/api/cars")
+        .then((response) => response.json())
+        .then((data) => {
+          data
+            .forEach((cars) => {
+              carDetails.innerHTML += `<tr>
+                    <td>${cars.id}</td>
+                    <td>${cars.make}</td>
+                    <td>${cars.model}</td>
+                    <td>${cars.year}</td>
+                    </tr>`;
+            })
+            .catch((error) => {
+              console.log("Error fetching the details", error);
+            });
+        });
+
+      // --------------------------------------------------------------
+
+      const carForm = document.getElementById("form");
+      carForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const make = document.getElementById("make").value;
+        const model = document.getElementById("model").value;
+        const year = parseInt(getElementById("year").value);
+
+        const newCar = { make, model, year };
+      });
+      fetch("/api/cars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCar),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          carDetails.innerHTML += `<tr>
+                    <td>${data.car.id}</td>
+                    <td>${data.car.make}</td>
+                    <td>${data.car.model}</td>
+                    <td>${data.car.year}</td>
+                    </tr>`;
+          carForm.reset();
+        })
+        .catch((error) => {
+          console.log("Error adding car", error);
+        });
+    </script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

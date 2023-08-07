@@ -8,36 +8,48 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script>
+      async function getStockPrice(){
+        const stock = document.getElementById('stock').value;
+        const date = document.getElementById('date').value;
+          const APIKey= "wIK8H7_dFgpSspm21qBKDmSQvQ5hkNZ4";
+          // const StockSymbol = "AAPL" //stock symbol / ticker symbol for apple Inc
+          // const APIURL = `https://api.polygon.io/v2/aggs/ticker/${stock}/prev?adjusted=true&apiKey=${APIKey}`;
+          const APIURL = `https://api.polygon.io/v2/aggs/ticker/${stock}/range/1/day/${date}/${date}?unadjusted=true&apiKey=${APIKey}`;
+          try {
+              const response = await fetch(APIURL);
+              const data = await response.json();
+              const price = data.results[0];
+              // const StockDate = new Date(price.t).toLocaleDateString();
+              const OpenPrice = price.o;
+              const ClosePrice = price.c;
+              const HighPrice = price.h;
+              const LowPrice = price.l;
+              // const price = data.last.price;
+              document.getElementById('result').innerHTML = `<h3>the price of ${stock} are as follow: </h3> \n Opening Price is ${OpenPrice} \n
+              Closing Price is ${ClosePrice} \n
+              Higher Price is ${HighPrice} \n
+              Lower Price is ${LowPrice} `
+          } 
+          catch(error) {
+              console.error('Error Fetching Price', error)
+              document.getElementById('result').innerHTML = `Error Fetching Price`
+          }
+      }
+  </script>
   </head>
   <body>
     <!-- polygon.io -->
-      <h3>Stock price</h3>
-      <button onclick="getStockPrice()">Get Apple Stock Price</button>
-      <div id="result"></div>
+    <h3>Stock price</h3>
+    <input type="text" name="stock" id="stock">
+    <input type="date" name="data" id="date">
+    <button onclick="getStockPrice()">Get Apple Stock Price</button>
+    <div id="result"></div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <script>
-        async function getStockPrice(){
-            const APIKey= "wIK8H7_dFgpSspm21qBKDmSQvQ5hkNZ4";
-            const StockSymbol = "AAPL" //stock symbol / ticker symbol for apple Inc
-            const APIURL = `https://api.polygon.io/v2/aggs/ticker/${StockSymbol}/prev?adjusted=true&apiKey=${APIKey}`;
-            try {
-                const response = await fetch(APIKey);
-                const data = await response.json();
-                const price = data.result[0].l;
-                // const price = data.last.price;
-                document.getElementById('result').innerHTML = `Current Price of ${StockSymbol} is ${price}`
-            } 
-            catch(error) {
-                console.error('Error Fetching Price', error)
-                document.getElementById('result').innerHTML = `Error Fetching Price`
-            }
-        }
-    </script>
 
   </body>
 </html>
