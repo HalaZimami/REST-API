@@ -74,8 +74,7 @@
       fetch("/api/cars")
         .then((response) => response.json())
         .then((data) => {
-          data
-            .forEach((cars) => {
+          data.forEach((cars) => {
               carDetails.innerHTML += `<tr>
                     <td>${cars.id}</td>
                     <td>${cars.make}</td>
@@ -95,11 +94,11 @@
         e.preventDefault();
         const make = document.getElementById("make").value;
         const model = document.getElementById("model").value;
-        const year = parseInt(getElementById("year").value);
+        const year = parseInt(document.getElementById("year").value);
 
         const newCar = { make, model, year };
-      });
-      fetch("/api/cars", {
+
+        fetch("/api/cars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newCar),
@@ -117,6 +116,7 @@
         .catch((error) => {
           console.log("Error adding car", error);
         });
+      });
     </script>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

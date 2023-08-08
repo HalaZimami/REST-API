@@ -16,5 +16,11 @@
         "make": "Chevrolet",
         "model": "Subarban",
         "year": 2022
+    },
+    {
+        "id": 4,
+        "make": "Chevrolet",
+        "model": "Subarban",
+        "year": 2022
     }
 ]
